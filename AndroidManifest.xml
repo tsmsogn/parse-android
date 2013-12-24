@@ -35,6 +35,13 @@
             android:name="com.tsmsogn.parse.CreatePostActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
