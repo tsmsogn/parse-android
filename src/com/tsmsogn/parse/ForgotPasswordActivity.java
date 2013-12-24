@@ -1,5 +1,9 @@
 package com.tsmsogn.parse;
 
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
 
 public class ForgotPasswordActivity extends Activity implements OnClickListener {
     private final static String TAG = ForgotPasswordActivity.class

@@ -83,8 +83,6 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new RemoteDataTask().execute();
-        registerForContextMenu(getListView());
     }
 
     @Override
@@ -94,9 +92,12 @@ public class MainActivity extends ListActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // do stuff with the user
+            new RemoteDataTask().execute();
+            registerForContextMenu(getListView());
         } else {
             startActivityForResult(new Intent(this, SignInActivity.class),
                     ACTIVITY_SIGNIN);
+
         }
     }
 

@@ -15,5 +15,6 @@
     <string name="add">Add</string>
     <string name="empty">Empty</string>
     <string name="menu_delete">Delete</string>
+    <string name="app_id"></string>
 
 </resources>

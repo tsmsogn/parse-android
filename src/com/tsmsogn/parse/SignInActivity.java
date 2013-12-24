@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -31,6 +34,8 @@ public class SignInActivity extends Activity implements OnClickListener {
 
     private ImageView mSignInWithTwitterImageView;
 
+    private ImageView mSignInWithFacebookImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +48,13 @@ public class SignInActivity extends Activity implements OnClickListener {
         mSignInButton = (Button) findViewById(R.id.button1);
         mSignUpButton = (Button) findViewById(R.id.button2);
         mSignInWithTwitterImageView = (ImageView) findViewById(R.id.imageView1);
+        mSignInWithFacebookImageView = (ImageView) findViewById(R.id.imageView2);
         mForgotYourPasswordButton = (TextView) findViewById(R.id.textView1);
         mSignInButton.setOnClickListener(this);
         mSignUpButton.setOnClickListener(this);
         mForgotYourPasswordButton.setOnClickListener(this);
         mSignInWithTwitterImageView.setOnClickListener(this);
+        mSignInWithFacebookImageView.setOnClickListener(this);
     }
 
     @Override
@@ -77,6 +84,44 @@ public class SignInActivity extends Activity implements OnClickListener {
             });
 
         } else if (v == mSignInWithTwitterImageView) {
+            ParseTwitterUtils.logIn(this, new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException err) {
+                    if (user == null) {
+                        Log.d(TAG,
+                                "Uh oh. The user cancelled the Twitter login.");
+                    } else if (user.isNew()) {
+                        Log.d(TAG,
+                                "User signed up and logged in through Twitter!");
+                    } else {
+                        Log.d(TAG, "User logged in through Twitter!");
+                    }
+                }
+            });
+
+        } else if (v == mSignInWithFacebookImageView) {
+            Log.d(TAG, "Sign in With Facebook");
+
+            ParseFacebookUtils.logIn(this, new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException err) {
+                    if (user == null) {
+                        Log.d(TAG,
+                                "Uh oh. The user cancelled the Facebook login.");
+                    } else if (user.isNew()) {
+                        Log.d(TAG,
+                                "User signed up and logged in through Facebook!");
+                        Intent intent = getIntent();
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else {
+                        Log.d("MyApp", "User logged in through Facebook!");
+                        Intent intent = getIntent();
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                }
+            });
 
         } else if (v == mForgotYourPasswordButton) {
             startActivity(new Intent(this, ForgotPasswordActivity.class));
@@ -110,6 +155,12 @@ public class SignInActivity extends Activity implements OnClickListener {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 
 }
